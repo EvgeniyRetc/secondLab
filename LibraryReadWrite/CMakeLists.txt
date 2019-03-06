@@ -1,0 +1,5 @@
+project(LibraryReadWrite)
+set(SOURCES LibraryReadWrite.cpp)
+set(HEADERS LibraryReadWrite.h)
+add_library(LibraryReadWrite static ${SOURCES} ${HEADERS})
+target_include_directories(LibraryReadWrite PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

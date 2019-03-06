@@ -74,16 +74,15 @@ void TestFunctions() {
 
 int main()
 {
-	__declspec(dllexport) void QuickSort(int* unsortedVector, int first, int last)
-		HINSTANCE qSortLib;
+	HINSTANCE qSortLib;
 	qSortLib = LoadLibrary("qSortLibrary.dll");
 	if (!qSortLib) {
-		printf("Ошибка: не могу найти qSortLibrary.dll");
+		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
 		return 0;
 	}
-	DllFunc = (void(*)(int* unsortedVector)(int first)(int last))GetProcAdress(qSortLib, "QuickSort");
-	if (!DllFunc) {
-		printf("Ошибка: не могу найти qSortLibrary.dll")
+	DllQuickSort = (void(*)(int*, int, int))GetProcAdress(qSortLib, "QuickSort");
+	if (!DllQuickSort) {
+		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
 		return 0;
 	}
 	const uint32_t NUMBER_OF_ELEMENTS = 10; // длинна массива
@@ -91,7 +90,7 @@ int main()
 	GenerateRandomVector(vector, NUMBER_OF_ELEMENTS, 255);
 	WriteToWorkFile(vector, NUMBER_OF_ELEMENTS, GENERATED_FILE_FLAG);
 	ReadFromFile(vector, NUMBER_OF_ELEMENTS, "genetaredVector.txt");
-	QuickSort(vector, 0, NUMBER_OF_ELEMENTS - 1);
+	DllQuickSort(vector, 0, NUMBER_OF_ELEMENTS - 1);
 	WriteToWorkFile(vector, NUMBER_OF_ELEMENTS, SORTED_FILE_FLAG);
 	TestFunctions();
 	std::cout << std::endl;
