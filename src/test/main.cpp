@@ -3,13 +3,14 @@
 #include <fstream>
 #include "LibraryReadWrite.h"
 #include <windows.h> 
+#include <locale>
 
 #define SORTED_FILE_FLAG false
 #define GENERATED_FILE_FLAG true
 typedef void (*Q_SORT_FUNCTION)(int*, int, int);
 
 void QsortFromDll(int* vector, int first, int last) {
-	char* libPath = "../src/LibrarySort/Debug/qSortLibrary.dll";
+	char* libPath = "D:/C++/secondLab/build/src/LibrarySort/Debug/qSortLibrary.dll";
 	HINSTANCE qSortLib;
 	qSortLib = LoadLibrary(libPath);
 	if (!qSortLib) {
@@ -72,24 +73,12 @@ void TestReverseVector() {
 }
 
 void TestEmptyVector(){
-	HINSTANCE qSortLib;
-	qSortLib = LoadLibrary("qSortLibrary.dll");
-	if (!qSortLib) {
-		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
-		return;
-	}
-
-	Q_SORT_FUNCTION DllQuickSort = (void(*)(int*, int, int))GetProcAddress(qSortLib, "QuickSort");
-	if (!DllQuickSort) {
-		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
-		return;
-	}
 	//empty vector 
 	int vector[1] = {};
 	std::cout << "Test5: empty vector: " << std::endl;
 	std::cout << "Before: " << std::endl;
 	ShowVector(vector, 0);
-	DllQuickSort(vector, 0, 0);
+	QsortFromDll(vector, 0, 0);
 	std::cout << "After: " << std::endl;
 	ShowVector(vector, 0);
 }
@@ -105,8 +94,10 @@ void TestFunctions() {
 }
 
 
-int main()
-{
+int main(){
+	setlocale(LC_ALL, "Russian");
+	char buffer[256];
+	GetCurrentDirectory(sizeof(buffer), buffer);
 	const uint32_t NUMBER_OF_ELEMENTS = 10; // длинна массива
 	int vector[10];
 	GenerateRandomVector(vector, NUMBER_OF_ELEMENTS, 255);

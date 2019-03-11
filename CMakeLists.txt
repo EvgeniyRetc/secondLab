@@ -4,4 +4,5 @@ project(secondLab)
 add_subdirectory(src/LibrarySort)
 add_subdirectory(src/LibraryReadWrite)
 add_subdirectory(src/test)
+add_subdirectory(googletest)
 
