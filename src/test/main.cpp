@@ -4,6 +4,7 @@
 #include "LibraryReadWrite.h"
 #include <windows.h> 
 #include <locale>
+#include "gtest/gtest.h"
 
 #define SORTED_FILE_FLAG false
 #define GENERATED_FILE_FLAG true
