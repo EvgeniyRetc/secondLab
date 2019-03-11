@@ -1,5 +1,5 @@
 #include "stdint.h"
-#include "qSortLibrary"
+#include "qSortLibrary.h"
 void QuickSort(int* unsortedVector, int first, int last) {
 
 	int i = first, j = last; 		// поставить указатели на исходные места

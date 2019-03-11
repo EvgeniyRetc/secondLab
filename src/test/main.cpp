@@ -1,6 +1,8 @@
 #include "stdint.h"
 #include <iostream>
 #include <fstream>
+#include "LibraryReadWrite.h"
+#include <windows.h> 
 
 #define SORTED_FILE_FLAG false
 #define GENERATED_FILE_FLAG true
