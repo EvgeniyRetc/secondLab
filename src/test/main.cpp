@@ -6,6 +6,25 @@
 
 #define SORTED_FILE_FLAG false
 #define GENERATED_FILE_FLAG true
+typedef void (*Q_SORT_FUNCTION)(int*, int, int);
+
+void QsortFromDll(int* vector, int first, int last) {
+	char* libPath = "../src/LibrarySort/Debug/qSortLibrary.dll";
+	HINSTANCE qSortLib;
+	qSortLib = LoadLibrary(libPath);
+	if (!qSortLib) {
+		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
+		return;
+	}
+
+	Q_SORT_FUNCTION DllQuickSort = (void(*)(int*, int, int))GetProcAddress(qSortLib, "QuickSort");
+	if (!DllQuickSort) {
+		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
+		return;
+	}
+	DllQuickSort(vector, first, last);
+	FreeLibrary(qSortLib);
+}
 
 void TestRandomVector() {
 	//random vector
@@ -14,7 +33,7 @@ void TestRandomVector() {
 	std::cout << "Test1: random vecror: " << std::endl;
 	std::cout << "Before: " << std::endl;
 	ShowVector(vector, 10);
-	QuickSort(vector, 0, 10 - 1);
+	QsortFromDll(vector, 0, 10 - 1);
 	std::cout << "After: " << std::endl;
 	ShowVector(vector, 10);
 }
@@ -25,7 +44,7 @@ void TestSortedVector(){
 	std::cout << "Test2: sorted vector: " << std::endl;
 	std::cout << "Before: " << std::endl;
 	ShowVector(vector, 10);
-	QuickSort(vector, 0, 10 - 1);
+	QsortFromDll(vector, 0, 10 - 1);
 	std::cout << "After: " << std::endl;
 	ShowVector(vector, 10);
 }
@@ -36,7 +55,7 @@ void Test1not1Vector() {
 	std::cout << "Test3: -1, 1 numbers : " << std::endl;
 	std::cout << "Before: " << std::endl;
 	ShowVector(vector, 10);
-	QuickSort(vector, 0, 10 - 1);
+	QsortFromDll(vector, 0, 10 - 1);
 	std::cout << "After: " << std::endl;
 	ShowVector(vector, 10);
 }
@@ -47,18 +66,30 @@ void TestReverseVector() {
 	std::cout << "Test4: reverse sorted vector: " << std::endl;
 	std::cout << "Before: " << std::endl;
 	ShowVector(vector, 10 - 1);
-	QuickSort(vector, 0, 10 - 1);
+	QsortFromDll(vector, 0, 10 - 1);
 	std::cout << "After: " << std::endl;
 	ShowVector(vector, 10);
 }
 
 void TestEmptyVector(){
+	HINSTANCE qSortLib;
+	qSortLib = LoadLibrary("qSortLibrary.dll");
+	if (!qSortLib) {
+		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
+		return;
+	}
+
+	Q_SORT_FUNCTION DllQuickSort = (void(*)(int*, int, int))GetProcAddress(qSortLib, "QuickSort");
+	if (!DllQuickSort) {
+		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
+		return;
+	}
 	//empty vector 
 	int vector[1] = {};
 	std::cout << "Test5: empty vector: " << std::endl;
 	std::cout << "Before: " << std::endl;
 	ShowVector(vector, 0);
-	QuickSort(vector, 0, 0);
+	DllQuickSort(vector, 0, 0);
 	std::cout << "After: " << std::endl;
 	ShowVector(vector, 0);
 }
@@ -76,23 +107,12 @@ void TestFunctions() {
 
 int main()
 {
-	HINSTANCE qSortLib;
-	qSortLib = LoadLibrary("qSortLibrary.dll");
-	if (!qSortLib) {
-		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
-		return 0;
-	}
-	DllQuickSort = (void(*)(int*, int, int))GetProcAdress(qSortLib, "QuickSort");
-	if (!DllQuickSort) {
-		std::cout << "Ошибка: не могу найти qSortLibrary.dll" << std::endl;
-		return 0;
-	}
 	const uint32_t NUMBER_OF_ELEMENTS = 10; // длинна массива
 	int vector[10];
 	GenerateRandomVector(vector, NUMBER_OF_ELEMENTS, 255);
 	WriteToWorkFile(vector, NUMBER_OF_ELEMENTS, GENERATED_FILE_FLAG);
 	ReadFromFile(vector, NUMBER_OF_ELEMENTS, "genetaredVector.txt");
-	DllQuickSort(vector, 0, NUMBER_OF_ELEMENTS - 1);
+	QsortFromDll(vector, 0, NUMBER_OF_ELEMENTS - 1);
 	WriteToWorkFile(vector, NUMBER_OF_ELEMENTS, SORTED_FILE_FLAG);
 	TestFunctions();
 	std::cout << std::endl;

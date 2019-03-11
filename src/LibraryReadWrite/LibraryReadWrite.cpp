@@ -30,3 +30,17 @@ void ReadFromFile(int* vectorFromFile, uint32_t lengthVector, std::string fileNa
 	}
 	in.close(); //закрываем файл
 }
+
+void GenerateRandomVector(int * vector, uint32_t lengthVector, uint32_t limit){
+	if (lengthVector < 1) return;
+	for (uint32_t i = 0; i < lengthVector; i++) {
+		vector[i] = rand() % limit;
+	}
+}
+
+void ShowVector(int * vectorIn, uint32_t lengthVector){
+	for (uint32_t i = 0; i < lengthVector; i++) {
+		std::cout << vectorIn[i] << ' ';
+	}
+	std::cout << std::endl;
+}
