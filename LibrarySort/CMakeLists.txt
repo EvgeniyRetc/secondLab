@@ -1,4 +1,5 @@
-project(LibrarySort)
+cmake_minimum_required(VERSION 2.8)
+project(qSortLibrary)
 set(SOURCES qSortLibrary.cpp)
 set(HEADERS qSortLibrary.h)
 add_library(qSortLibrary shared ${SOURCES} ${HEADERS})
