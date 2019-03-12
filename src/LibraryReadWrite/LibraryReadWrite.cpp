@@ -6,10 +6,10 @@
 void WriteToWorkFile(int* dataIn, uint32_t lengthVector, bool choiceFileFlag) {
 	std::ofstream out;
 	if (choiceFileFlag) {
-		out.open("genetaredVector.txt");
+		out.open("../../../files/genetaredVector.txt");
 	}
 	else {
-		out.open("sortedVector.txt");
+		out.open("../../../files/sortedVector.txt");
 	}
 	if (out.is_open())
 	{
@@ -23,7 +23,6 @@ void WriteToWorkFile(int* dataIn, uint32_t lengthVector, bool choiceFileFlag) {
 void ReadFromFile(int* vectorFromFile, uint32_t lengthVector, std::string fileName) {
 	std::ifstream in(fileName);
 	if (in.is_open()) {
-		vectorFromFile = new int[lengthVector];
 		for (uint32_t i = 0; i < lengthVector; i++) {
 			in >> vectorFromFile[i];
 		}
